@@ -1,0 +1,4 @@
+﻿Declaracion de IA:
+Utilizamos IA en los momentos que sentimos que queriamos mas pero nuestros conocimientos no llegaban. 
+No quisimos limitarnos solo por lo aprendido y la IA fue una gran herramienta que sirvio mucho en muchas puntos, a veces dandonos formas mas simples de hacer cosas en vez de complicarnola  y a veces mostrándonos cosas que no habiamos visto y uqe nos parecieron re copadas.
+En el código esta especificado con comentarios en donde se utilizó y para que

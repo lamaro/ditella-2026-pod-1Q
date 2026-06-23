@@ -1,0 +1,574 @@
+
+//FONDO
+let imgDJ
+let imgVJ
+let pantalla = "dj"
+
+//VJ
+let consolaVj
+let capa1Activa = false
+let capa2Activa = false
+let capa3Activa = false
+let amplitud
+let efectoBlur = false
+let efectoFlash = false
+let diametroCapa2 = 100
+let djChiquito
+let publico
+
+//REFLECTORES
+let reflectoresChicos = false
+let reflectoresGrandes = false
+
+// IMGBOTONES
+let imgPausa
+let imgDespausa
+let imgRepeat
+let imgVolumenMenos
+let imgVolumenMas
+let ImgCue
+
+//volumen
+let volumen1 = 0.5
+let volumen2 = 0.5
+// comandos para no repetir funciones de botones
+let pausaActiva = false
+let playActivo = false
+let repeatActivo = false
+let pausaActiva2 = false
+let playActivo2 = false
+let repeatActivo2 = false
+
+//PARA CUE
+let imgCue
+
+let cueActivo = false
+let cueActivo2 = false
+
+let volumenGuardado1 = 0
+let volumenGuardado2 = 0
+
+let clickPendiente = false
+//mp3
+let cancion1
+let cancion2
+let sonido1
+let sonido2
+let sonido3
+let sonido4 
+
+let fft1
+let fft2
+let listaDeVolumenes
+let tamanioArray = 32
+
+
+function preload() {
+//IMAGENES INICIALES
+  imgDJ = loadImage("imagenes/CONSOLA-12.png")
+  imgVJ = loadImage("imagenes/EDIFICIOSVJ.png")
+//CANCIONES PRINCIPALES
+  cancion1 = loadSound("sonido/PLEASE ME.mp3")
+  cancion2 = loadSound("sonido/YOTEDIRE.mp3")
+  sonido1= loadSound("sonido/SONIDO1-PM.mp3")
+  sonido2= loadSound("sonido/SONIDO2-PM.mp3")
+//BOTONESDJ
+ imgPausa = loadImage("imagenes/PAUSA1.png")
+imgDespausa = loadImage("imagenes/DESPAUSA2.png")
+imgRepeat = loadImage("imagenes/REPEAT1.png")
+imgVolumenMenos = loadImage("imagenes/VOLUMEN-.png")
+imgVolumenMas = loadImage("imagenes/VOLUMEN+.png")
+imgCue = loadImage ("imagenes/CUE.png")
+//VJ
+consolaVj = loadImage ("imagenes/CONSOLAVJ.png")
+djChiquito = loadImage ("imagenes/DJCHIQUITO.png")
+publico = loadImage ("imagenes/PUBLICO-(2).gif")
+}
+
+function setup() {
+  createCanvas(1606, 850)
+  imageMode(CORNER)
+//VOLUMENES DE CANCIONES
+ cancion1.setVolume(volumen1)
+ cancion2.setVolume(volumen2)
+
+//PARA WF
+   fft1 = new p5.FFT(0.8, tamanioArray)
+  fft1.setInput(cancion1)
+  fft2 = new p5.FFT(0.8, tamanioArray)
+fft2.setInput(cancion2)
+
+  //AMPLITUD
+  amplitud = new p5.Amplitude()
+
+}
+function draw() {
+
+  //TECLAS V Y D, CAMBIAR DE PANTALLA
+  if (pantalla === "dj") {
+    drawDJ()
+  } else if (pantalla === "vj") {
+    drawVJ()
+  }
+  
+  // CLICK PARA BOTONES 
+  clickPendiente = false
+}
+
+
+function drawDJ() {
+  image(imgDJ, 0, 0, width, height)
+  drawWaveformDJ()
+  drawTiempoCancion()
+
+  fill(255)
+  textSize(20)
+  text("x: " + mouseX + " y: " + mouseY, 100, 30)
+
+  // BOTONES CANCION 1
+  let pausaAntes = pausaActiva
+  pausaActiva = button(pausaActiva, 525, 575, 65, 45, "", 0, 255, imgDespausa)
+
+  if (pausaActiva !== pausaAntes) {
+    cancion1.pause()
+    playActivo = false
+  }
+
+  let playAntes = playActivo
+  playActivo = button(playActivo, 448, 575, 65, 45, "", 0, 255, imgPausa)
+
+  if (playActivo !== playAntes) {
+    if (!cancion1.isPlaying()) {
+      cancion1.play()
+    }
+    pausaActiva = false
+  }
+
+  let repeatAntes = repeatActivo
+  repeatActivo = button(repeatActivo, 372, 575, 65, 45, "", 0, 255, imgRepeat)
+
+  if (repeatActivo !== repeatAntes) {
+    cancion1.stop()
+    cancion1.play()
+    repeatActivo = false
+    playActivo = true
+    pausaActiva = false
+  }
+
+  // BOTONES CANCION 2
+  let pausaAntes2 = pausaActiva2
+  pausaActiva2 = button(pausaActiva2, 1148, 575, 70, 45, "", 0, 255, imgDespausa)
+
+  if (pausaActiva2 !== pausaAntes2) {
+    cancion2.pause()
+    playActivo2 = false
+  }
+
+  let playAntes2 = playActivo2
+  playActivo2 = button(playActivo2, 1068, 575, 70, 45, "", 0, 255, imgPausa)
+
+  if (playActivo2 !== playAntes2) {
+    if (!cancion2.isPlaying()) {
+      cancion2.play()
+    }
+    pausaActiva2 = false
+  }
+
+  let repeatAntes2 = repeatActivo2
+  repeatActivo2 = button(repeatActivo2, 992, 575, 70, 45, "", 0, 255, imgRepeat)
+
+  if (repeatActivo2 !== repeatAntes2) {
+    cancion2.stop()
+    cancion2.play()
+    repeatActivo2 = false
+    playActivo2 = true
+    pausaActiva2 = false
+  }
+
+  // VOLUMENES
+ volumen1 = controlVolumen(cancion1, volumen1, 660, 393, 660, 421)
+ volumen2 = controlVolumen(cancion2, volumen2, 900, 393, 900, 421)
+
+indicadorVolumen(volumen1, 698, 512)
+indicadorVolumen(volumen2, 880, 511)
+//CUE CANCION1
+let cueAntes = cueActivo
+cueActivo = button(cueActivo, 675, 307, 50, 20, "", 0, 255, imgCue)
+
+if (cueActivo !== cueAntes) {
+  if (cueActivo) {
+    volumenGuardado1 = volumen1
+    cancion1.setVolume(0)
+  } else {
+    volumen1 = volumenGuardado1
+    cancion1.setVolume(volumen1)
+  }
+}
+//CUE CANCION2
+let cueAntes2 = cueActivo2
+cueActivo2 = button(cueActivo2, 860, 307, 50,20, "", 0, 255, imgCue)
+
+if (cueActivo2 !== cueAntes2) {
+  if (cueActivo2) {
+    volumenGuardado2 = volumen2
+    cancion2.setVolume(0)
+  } else {
+    volumen2 = volumenGuardado2
+    cancion2.setVolume(volumen2)
+  }
+}
+// BOTONES SONIDOS EXTRAAAA
+if (button(false, 398, 129, 40, 20, "", color(255, 60), 255)) {
+  sonido1.stop()
+  sonido1.play()
+}
+
+if (button(false, 452, 129, 40, 20, "", color(255, 60), 255)) {
+  sonido2.stop()
+  sonido2.play()
+}
+//Nombres canciones
+fill(175)
+  textSize(12)
+  text()
+}
+
+function drawTiempoCancion() {
+
+  //ACA FALTA CARCAR LA TIPO, SON LOS SEGUNDOS Y MINS
+  //CANCION1
+  let tiempo1 = cancion1.currentTime()
+  let minutos1 = floor(tiempo1 / 60)
+  let segundos1 = floor(tiempo1 % 60)
+
+  if (segundos1 < 10) {
+    segundos1 = "0" + segundos1
+  }
+
+  fill(175)
+  textSize(12)
+  text(minutos1 + ":" + segundos1, 745, 186)
+
+  // CANCION 2
+  let tiempo2 = cancion2.currentTime()
+  let minutos2 = floor(tiempo2 / 60)
+  let segundos2 = floor(tiempo2 % 60)
+
+  if (segundos2 < 10) {
+    segundos2 = "0" + segundos2
+  }
+
+  fill(175)
+  textSize(12)
+  text(minutos2 + ":" + segundos2, 904, 186)
+  //Nombres canciones
+ fill(255); 
+textSize(9);
+textAlign(CORNER);
+text("YO TE DIRE - MIRANDA", 797, 133);
+text("PLEASE ME - MAXI TRUSSO", 637, 133) 
+}
+function drawWaveformDJ() {
+  let lista1 = fft1.waveform()
+  let lista2 = fft2.waveform()
+
+  for (let i = 0; i < 10; i++) {
+    let alto1 = map(lista1[i], -1, 1, 5, 70)
+    let alto2 = map(lista2[i], -1, 1, 5, 70)
+
+    fill(140)
+    noStroke()
+    rect(640 + i * 10, 186 - alto1, 4, alto1)
+
+    fill(230)
+    rect(800 + i * 10, 186 - alto2, 4, alto2)
+  }
+}
+function controlVolumen(cancion, volumen, xMas, yMas, xMenos, yMenos) {
+  if (button(false, xMenos, yMenos, 20, 20, "", 0, 255, imgVolumenMenos)) {
+    volumen = volumen - 0.1
+  }
+
+  if (button(false, xMas, yMas, 20, 20, "", 0, 255, imgVolumenMas)) {
+    volumen = volumen + 0.1
+  }
+
+  if (volumen < 0) {
+    volumen = 0
+  }
+
+  if (volumen > 1) {
+    volumen = 1
+  }
+
+  cancion.setVolume(volumen)
+
+  return volumen
+}
+function indicadorVolumen(volumen, x, yAbajo) {
+  let cantidad = round(volumen * 10)
+
+  if (cantidad > 9) {
+    cantidad = 9
+  }
+
+  for (let i = 0; i < cantidad; i++) {
+    fill(255)
+    noStroke()
+    circle(x, yAbajo - i * 21.4894, 10.5)
+  }
+  
+}
+function drawVJ() {
+  
+  //ACA COMPLETA MILIIIIIIIIIIIIIIIII, NO EDITAR LO DE WIDHT Y HEIGHT PORQUE YA ESTA EN EL SETUP INICIAL 
+  background(0)
+
+    if (capa1Activa) {
+    drawCapa1()
+  }
+
+  if (capa2Activa) {
+    drawCapa2()
+  }
+
+  if (capa3Activa) {
+    drawCapa3()
+  }
+
+ //if (efectoBlur) {
+ //   filter(BLUR, 0.5)
+// }
+
+if (efectoFlash) {
+  drawFlash()
+}
+
+  image(imgVJ, 0, 0, width, height)
+  image(djChiquito,0,0+20,width, height)
+
+//tint(125)
+  image(publico, 0,0-50,width,height)
+  //noTint()
+
+  drawBotonesVJ()
+  
+  drawReflectores()
+
+   image(consolaVj, 0,0,width,height)
+  drawBotonesReflectores()
+drawBotonesEfectosVJ()
+
+ 
+
+  fill(255)
+  textSize(20)
+  text("x: " + mouseX + " y: " + mouseY, 100, 30)
+}
+
+function drawBotonesEfectosVJ() {
+  efectoBlur = button(efectoBlur, 835, 590, 70, 40, "", 0, 255)
+
+  efectoFlash = button(efectoFlash, 920, 590, 70, 40, "", 0, 255)
+}
+
+function drawBotonesReflectores() {
+  // Boton 1: prende reflectores chicos
+  if (button(false, 715, 545, 20, 20, "", 0, 255)) {
+    reflectoresChicos = true
+  }
+
+  // Boton 2: apaga todos
+  if (button(false, 750, 545, 20, 20, "", 0, 255)) {
+    reflectoresChicos = false
+    reflectoresGrandes = false
+  }
+
+  // Boton 3: prende reflectores grandes
+  if (button(false, 785, 545, 20, 20, "", 0, 255)) {
+    reflectoresGrandes = true
+  }
+}
+
+function drawFlash() {
+  let nivel = amplitud.getLevel()
+
+  let opacidad = map(nivel, 0, 0.4, 0, 220)
+
+  if (opacidad > 220) {
+    opacidad = 220
+  }
+
+  noStroke()
+  fill(255, opacidad)
+  rect(0, 0, width, height)
+}
+
+function drawReflectores() {
+  noStroke()
+
+  if (reflectoresGrandes) {
+  fill(255, 225, 150, 35)
+
+  let movimientoX1 = sin(frameCount * 0.025) * 260
+  let movimientoY1 = sin(frameCount * 0.018) * 900
+
+  let movimientoX2 = sin(frameCount * 0.025 + 2) * 260
+  let movimientoY2 = sin(frameCount * 0.018 + 2) * 900
+
+  let yGrande1 = 1600 - movimientoY1
+  let yGrande2 = 1600 - movimientoY2
+
+
+
+  triangle(
+    420, 75,
+    150 + movimientoX1, yGrande1,
+    750 + movimientoX1, yGrande1
+  )
+
+  triangle(
+    1190, 75,
+    890 + movimientoX2, yGrande2,
+    1490 + movimientoX2, yGrande2
+  )
+}
+
+ if (reflectoresChicos) {
+  stroke(225, 50)
+  strokeWeight(1)
+
+  for (let i = 0; i < 13; i++) {
+    let x = 520 + i * 47.5
+    let movimientoX = sin(frameCount * 0.09 + i * 0.9) * 300
+
+    line(
+      x, 150,
+      x + movimientoX, 700
+    )
+  }
+
+  noStroke()
+}
+}
+
+function drawCapa1() {
+  let nivel = amplitud.getLevel()
+
+  let cantidad = 30 + round(nivel * 300)
+  let tam = 3 + nivel * 60
+
+  //let colorRojo = 150 + nivel * 500
+  //let colorAzul = 200 + nivel * 300
+
+  for (let i = 0; i < cantidad; i++) {
+    fill(220, 0, 0, 180)
+    noStroke()
+
+    circle(random(width), random(height), tam)
+  }
+}
+
+function drawCapa2() {
+  //let nivel = amplitud.getLevel()
+
+  //let alto = map(nivel, 0, 0.4, 50, height)
+ //let opacidad = map(nivel, 0, 0.4, 40, 180)
+
+  //noStroke()
+  //fill(255, opacidad)
+  //rect(0, height - alto, width, alto)
+  let nivel = amplitud.getLevel()
+
+  diametroCapa2 = diametroCapa2 + 1
+
+  let diametroFinal = diametroCapa2 + nivel * 400
+
+  let x = width / 2 + sin(frameCount * 0.03) * 300
+  let y = height / 3
+
+  fill(220,70,0, 100)
+  //stroke(255, 180)
+  strokeWeight(2)
+  circle(x, y, diametroFinal)
+}
+
+function drawCapa3() {
+  listaDeVolumenes = fft1.waveform()
+
+  stroke(255, 60,0, 50)
+  strokeWeight(60,100)
+
+  for (let i = 0; i < listaDeVolumenes.length; i++) {
+    let x = map(i, 0, listaDeVolumenes.length - 1, 0, width)
+
+    let valor = listaDeVolumenes[i]
+
+    if (valor < 0) {
+      valor = valor * -1
+    }
+
+    let yArriba = map(valor, 0, 1, 300, 330)
+    let yAbajo = map(valor, 0, 1, 300, 360)
+
+    line(x, 0, x, yArriba)
+    line(x, height, x, yAbajo)
+  }
+
+  noStroke()
+}
+
+function drawBotonesVJ() {
+  let yBotonesVJ = 590
+
+  capa1Activa = button(capa1Activa, 460, yBotonesVJ, 60, 100, "", 0, 255)
+  capa2Activa = button(capa2Activa, 540, yBotonesVJ, 60, 100, "", 0, 255)
+  capa3Activa = button(capa3Activa, 620, yBotonesVJ, 60, 100, "", 0, 255)
+}
+
+function keyPressed() {
+  if (key === "v" || key === "V") {
+    pantalla = "vj"
+  }
+
+  if (key === "d" || key === "D") {
+    pantalla = "dj"
+  }
+  
+}
+
+function mousePressed() {
+  clickPendiente = true
+}
+
+// ESTO DEL HOVER ME COSTO ENTENDERLO, TODAVIA NO LO SE DEL TODO
+function button(variable, x, y, w, h, txt, bkgColor, txtColor, img = null) {
+  let hover = mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h
+
+  if (img !== null) {
+    if (hover) {
+      image(img, x - 4, y - 4, w + 8, h + 8)
+    } else {
+      image(img, x, y, w, h)
+    }
+  } else {
+    if (variable) {
+      fill(255, 0, 120)
+    } else if (hover) {
+      fill(180)
+    } else {
+      fill(bkgColor)
+    }
+
+    rect(x, y, w, h)
+
+    fill(txtColor)
+    text(txt, x + w / 2, y + h / 2)
+  }
+
+  if (hover && clickPendiente) {
+    variable = !variable
+  }
+
+  return variable
+}

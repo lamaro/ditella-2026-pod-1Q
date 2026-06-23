@@ -1,0 +1,11 @@
+Durante el desarrollo del proyecto utilizamos ChatGPT como herramienta de apoyo para resolver dudas técnicas, comprender conceptos de programación en p5.js y obtener explicaciones sobre temas como arrays, objetos, JSON, amplitud, FFT y análisis de frecuencias.
+
+A medida que el proyecto fue creciendo, también utilizamos la IA para revisar funciones y bloques de código ya realizados. En muchos casos el código funcionaba correctamente, pero nos ayudó a detectar posibles errores conceptuales, mejorar la organización y entender con mayor profundidad por qué ciertas estructuras debían implementarse de determinada manera. Por ejemplo, aprendimos formas alternativas de simplificar código utilizando operadores ternarios (condición ? valorSiEsTrue : valorSiEsFalse), la conveniencia de organizar información mediante objetos y arrays en lugar de variables sueltas, y distintas maneras de modularizar funciones para que el proyecto fuera más fácil de mantener.
+
+Además, la utilizamos para consultar ideas vinculadas a la propuesta visual, los comportamientos audio reactivos y la integración entre las vistas DJ y VJ. También nos ayudó a comprender mejor lógicas que no habíamos visto en profundidad durante la cursada, como el uso de FFT para analizar frecuencias, el funcionamiento de map(), lerp(), splice(), objetos complejos, JSON y la comunicación entre distintas partes de un proyecto dividido en múltiples archivos.
+
+Consideramos que el uso de IA no fue muy diferente al realizado en otros trabajos prácticos del semestre: funcionó principalmente como una herramienta de consulta, revisión y aprendizaje.
+
+
+
+Agustina Corona Mercuri y Nino Mallia - POD 1er Semestre 2026

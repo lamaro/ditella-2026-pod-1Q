@@ -1,0 +1,14 @@
+{
+  "tracks": [
+    { "nombre": "Bad Boys Cry" },
+    { "nombre": "live your life" }
+  ],
+  "botones": [
+    { "x": 37,   "y": 559, "w": 41, "h": 26, "r": 0,   "g": 200, "b": 0,   "texto": "▶️",  "accion": "play1"  },
+    { "x": 84,   "y": 559, "w": 41, "h": 26, "r": 255, "g": 200, "b": 0,   "texto": "⏸",  "accion": "pause1" },
+    { "x": 131,  "y": 559, "w": 40, "h": 26, "r": 200, "g": 0,   "b": 0,   "texto": "■",  "accion": "stop1"  },
+    { "x": 1034, "y": 559, "w": 41, "h": 27, "r": 0,   "g": 200, "b": 0,   "texto": "▶️",  "accion": "play2"  },
+    { "x": 1082, "y": 558, "w": 40, "h": 28, "r": 255, "g": 200, "b": 0,   "texto": "⏸",  "accion": "pause2" },
+    { "x": 1129, "y": 558, "w": 40, "h": 28, "r": 200, "g": 0,   "b": 0,   "texto": "■",  "accion": "stop2"  }
+  ]
+}

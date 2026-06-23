@@ -1,0 +1,28 @@
+{
+  "sfx": [
+    {
+      "nombre": "Grito",
+      "archivo": "assets/audio/grito.mp3"
+    },
+    {
+      "nombre": "Disparo",
+      "archivo": "assets/audio/disparo.mp3"
+    },
+    {
+      "nombre": "Respiro",
+      "archivo": "assets/audio/respiracion.mp3"
+    },
+    {
+      "nombre": "R2D2",
+      "archivo": "assets/audio/r2d2.mp3"
+    },
+    {
+      "nombre": "Marcha",
+      "archivo": "assets/audio/marcha.mp3"
+    },
+    {
+      "nombre": "Orquesta",
+      "archivo": "assets/audio/orquesta.mp3"
+    }
+  ]
+}
