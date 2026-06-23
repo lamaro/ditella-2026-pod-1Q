@@ -38,11 +38,11 @@ let sliderPuntoB = 690
 function preload(){
   fontPixelifySans = loadFont('assets/PixelifySans-VariableFont_wght.ttf')
   
-  vistavj = loadImage('imágenes/vistavj.png')
-  mesa = loadImage('imágenes/mesa.png')
-  mixer = loadImage('imágenes/mixer.png')
-  rueda = loadImage('imágenes/rueda.png')
-  slider = loadImage('imágenes/slider.png')
+  vistavj = loadImage('imagenes/vistavj.png')
+  mesa = loadImage('imagenes/mesa.png')
+  mixer = loadImage('imagenes/mixer.png')
+  rueda = loadImage('imagenes/rueda.png')
+  slider = loadImage('imagenes/slider.png')
 
   trackVoz = loadSound('canciones/yotedire_voz.mp3')
   trackKaraoke = loadSound('canciones/yotedire_karaoke.mp3')

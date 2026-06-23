@@ -84,7 +84,7 @@ function preload() {
   slider = loadImage("assets/slider.png");
   cabina = loadImage("assets/Cabina VJ.png");
   cabina2 = loadImage("assets/Cabina VJ 2.png");
-  cabinaOscura = loadImage("assets/Low Lights cabina.png");
+  cabinaOscura = loadImage("assets/low-lights-cabina.png");
 
   boton1 = loadImage("assets/Boton 1.png");
   boton2 = loadImage("assets/Boton 2.png");

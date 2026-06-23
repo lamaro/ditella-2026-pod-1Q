@@ -145,7 +145,7 @@ function preload() {
   botonEfecto1 = loadImage("recursos/botonEfecto1.png");
   botonEfecto2 = loadImage("recursos/botonEfecto2.png");
   efecto1 = loadSound("recursos/Efecto1.wav");
-  efecto2 = loadSound("recursos/efecto2.wav");
+  efecto2 = loadSound("recursos/Efecto2.wav");
   efecto3 = loadSound("recursos/Efecto3.wav");
   efecto4 = loadSound("recursos/Efecto4.wav");
   efecto5 = loadSound("recursos/Efecto5.wav");
